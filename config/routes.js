@@ -47,7 +47,7 @@ module.exports.routes = {
   'POST /signup': 'UserController.signup',
   'PUT /login': 'UserController.login',
   'GET /logout': 'UserController.logout',
-	'GET /playvsai':{view: 'humanvsai'}
+	'GET /playvsai':'PageController.showChessPage'
   // '/': {
   //   view: 'homepage'
   // }
