@@ -158,7 +158,18 @@ function engineGame(options) {
             if(game.history().length >= 2 && !time.depth && !time.nodes) {
                 startClock();
             }
-        }
+        }else
+        
+        {
+			if (game.in_checkmate())
+			{
+			if (turn != playerColor)
+			{alert("You Won");}
+			else
+			{alert("You Lost");}
+			}
+			}
+			
     }
     
     evaler.onmessage = function(event) {

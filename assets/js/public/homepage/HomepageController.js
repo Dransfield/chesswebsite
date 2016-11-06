@@ -17,7 +17,7 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
     })
     .then(function onSuccess (){
       // Refresh the page now that we've been logged in.
-      window.location = '/';
+      window.location.reload(true); 
     })
     .catch(function onError(sailsResponse) {
 
