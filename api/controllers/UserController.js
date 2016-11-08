@@ -11,6 +11,29 @@ module.exports = {
    * Check the provided email address and password, and if they
    * match a real user in the database, sign in to Activity Overlord.
    */
+   UpdateLevelBeaten: function(req,res)  {
+ User.findOne(req.session.me, function foundUser(err, user) {
+      if (err) return res.negotiate(err);
+
+      // If session refers to a user who no longer exists, still allow logout.
+      if (!user) {
+        sails.log.verbose('Session refers to a user who no longer exists.');
+        return res.backToHomePage();
+      }
+		 sails.log.verbose('about to update user level.');
+       
+      // Wipe out the session (log out)
+      user.DifficultyLevelBeaten=req.param('DifficultyLevelBeaten');
+	  user.save(function(err, savedUser){
+		   sails.log.verbose('saving user error.');
+       
+        });
+      // Either send a 200 OK or redirect to the home page
+      return res.ok();
+
+    });
+    },
+   
   login: function (req, res) {
 
     // Try to look up user using the provided email address

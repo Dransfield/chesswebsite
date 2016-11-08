@@ -45,7 +45,11 @@ module.exports = {
       required: true,
       defaultsTo: new Date(0)
     },
-
+	DifficultyLevelBeaten:{
+		type:'int',
+		defaultsTo:-1
+		},
+	
     // url for gravatar
     gravatarUrl: {
       type: 'string'

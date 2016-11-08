@@ -1,40 +1,62 @@
- <div class="container-fluid">
-      <!-- Creates the navbar -->
-        <nav class="navbar navbar-default navbar-inverse">
-          <!-- This creates the mechanism for collapse button -->
-          <button type="button" class="navbar-toggle" data-toggle="collapse" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
-            <!-- This controls the number of lines in the image when the nav collapse -->
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+<nav class="navbar navbar-default navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+			   <!-- This controls the number of lines in the image when the nav collapse -->
+			   <span class="icon-bar"></span>
+			   <span class="icon-bar"></span>
+			   <span class="icon-bar"></span>
+			</button>
 
-          <!-- This is the brand on the left-hand side. -->
-          <a class="navbar-brand" href="/#"> Chessbond</a>
-         
-          <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
+			<!-- This is the brand on the left-hand side. -->
+			<a class="navbar-brand" href="/#"> Chessbond</a>
+		</div>
+              
+        <div id="navbar" class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
+			<ul class="nav navbar-right">
 			
-			<% if (loggedin==false) { %>
-          <form ng-submit="submitLoginForm()" class="navbar-form navbar-right">
+				<% if (loggedin==false) { %>
+				<form ng-submit="submitLoginForm()" class="navbar-form navbar-right">
 		 
-              <div class="form-group">
-                  <input ng-model="loginForm.email" type="text" placeholder="Email" name="email" class="form-control">
-              </div>
-              <div class="form-group">
-                  <input ng-model="loginForm.password" type="password" placeholder="Password" name="password" class="form-control">
-              </div>
-              <button type="submit" class="btn btn-success">
-                <span ng-show="!loginForm.loading">Sign in</span>
-                <span ng-show="loginForm.loading" class="fa fa-spinner"></span>
-                <span ng-show="loginForm.loading">Signing in...</span>
-              </button>
-              <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+					<div class="form-group">
+						<input ng-model="loginForm.email" type="text" placeholder="Email" name="email" class="form-control">
+					</div>
+					<div class="form-group">
+						<input ng-model="loginForm.password" type="password" placeholder="Password" name="password" class="form-control">
+					</div>
+				
+					<button type="submit" class="btn btn-success">
+					<span ng-show="!loginForm.loading">Sign in</span>
+					<span ng-show="loginForm.loading" class="fa fa-spinner"></span>
+					<span ng-show="loginForm.loading">Signing in...</span>
+					</button>
+					<input type="hidden" name="_csrf" value="<%= _csrf %>" />
 				</form>
+					
+						
+				
 				  <% } else {%>
-					<div class="navbar-brand navbar-right">Welcome <%=me.name%></div>
+				  
+				  <div class="nav navbar-nav navbar-right">
+				  <li class="dropdown">
+					<a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome <%=me.name%><span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="/profile">View Profile</a></li>
+						<!--<li><a href="#">Another action</a></li>
+						<li><a href="#">Something else here</a></li>
+						<li role="separator" class="divider"></li>
+						<li class="dropdown-header">Nav header</li>
+						<li><a href="#">Separated link</a></li>
+						<li><a href="#">One more separated link</a></li>
+						-->
+					</ul>
+				  </li>
+				  </div>
+				  
+				
 					<% } %>
-				</nav>
-			</div>
-			
-    
-    </div>
+			</ul>
+		</div>
+		
+   </div>
+</nav>

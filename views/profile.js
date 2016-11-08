@@ -13,7 +13,6 @@
       <!--STYLES END-->
     <script type="text/javascript">
     window.SAILS_LOCALS = {
-		
       _csrf: '<%= _csrf %>'
        <% if (loggedin==true){ %>
       ,
@@ -45,48 +44,7 @@
   </head>
   <body ng-app="HomepageModule" ng-controller="HomepageController" ng-cloak>
   <%- include partials/navbar.ejs %>
-  
-  <!--
-  <form ng-submit="submitLevelForm()"
-  
-					<div class="form-group">
-						<input ng-model="LevelForm.level" type="text" placeholder="Email" name="email" class="form-control">
-					</div>
-				
-					<button type="submit" class="btn btn-success">
-					<span ng-show="!LevelForm.loading">Update Level</span>
-					</button>
-					<input type="hidden" name="_csrf" value="<%= _csrf %>" />
-				</form>
-	-->
-	
-	<form id="levelform" ng-submit="submitLevelForm()">
-	<h2>Choose a difficulty level:</h2>
-	<select ng-model="LevelForm.level" id="levelpicker" class="form-control bg-success" data-style="btn-success">
-	  <option>1</option>
-	  <option>2</option>
-	  <option>3</option>
-	  <option>4</option>
-	  <option>5</option>
-	  <option>6</option>
-	  <option>7</option>
-	  <option>8</option>
-	  <option>9</option>
-	  <option>10</option>
-	  <option>11</option>
-	  <option>12</option>
-	  <option>13</option>
-	  <option>14</option>
-	  <option>15</option>
-	  <option>16</option>
-	  <option>17</option>
-	  <option>18</option>
-	  <option>19</option>
-	  <option>20</option>
-	</select>
-	<button type="submit" class="btn btn-success">Go</button>
-	</form>
-    <div class="row" id="whole thing">
+    <div class="row">
       <div class="col-sm-7 col-md-6">
         <span class="h3" id="time1">0:05:00</span>
         <div id="board" style="width: 400px"></div>
@@ -95,7 +53,7 @@
         <div id="engineStatus">...</div>
       </div>
       <div class="col-sm-5 col-md-6">
-        <!-- <h3>Moves:</h3>
+        <h3>Moves:</h3>
         <div id="pgn"></div>
         <hr>
         <form class="form-horizontal">
@@ -138,8 +96,7 @@
               <button type="button" class="btn btn-primary" onclick="newGame()">New Game</button>
             </div>
           </div>
-          -->
-          <form class="form-horizontal">
+          
           <div class="form-group">
             <label for="color" class="control-label col-xs-4 col-sm-6 col-md-4">Promote to</label>
             <div class="col-xs-4 col-sm-6 col-md-4">
@@ -152,11 +109,9 @@
             </div>
           </div>
         </form>
-        
         <h5>Evaluation</h5>
         <pre id=evaluation></pre>
     </div>
-    <script>$( "div[id='whole thing']" ).hide();</script>
     <!--<script src="enginegame.js"></script>-->
     <script>
       var wait_for_script;
@@ -173,44 +128,42 @@
           var script_tag  = document.createElement("script");
           script_tag.type ="text/javascript";
           script_tag.src  = "stockfish.js";
-         // script_tag.onload = init;
+          script_tag.onload = init;
           document.getElementsByTagName("head")[0].appendChild(script_tag);
           wait_for_script = true;
         }
       }());
       
-      function init(skl)
+      function init()
       {
         var game = engineGame();
     
-        newGame = function newGame(skl) {
-            var baseTime = 5 * 60;
-            var inc = 2;
-            //var skill = parseInt($('#skillLevel').val());
-            var skill=skl;
-            //toastr.success('True skill Level: '+skill);
+        newGame = function newGame() {
+            var baseTime = parseFloat($('#timeBase').val()) * 60;
+            var inc = parseFloat($('#timeInc').val());
+            var skill = parseInt($('#skillLevel').val());
             game.reset();
             game.setTime(baseTime, inc);
-            game.setSkillLevel(skl);
-            game.setPlayerColor('white');
-            game.setDisplayScore(true);
+            game.setSkillLevel(skill);
+            game.setPlayerColor($('#color-white').hasClass('active') ? 'white' : 'black');
+            game.setDisplayScore($('#showScore').is(':checked'));
             game.start();
         }
         
         game.setSkillLevel
         
-       // document.getElementById("skillLevel").addEventListener("change", function ()
-        //{
-        //    game.setSkillLevel(parseInt(this.value, 10));
-        //});
+        document.getElementById("skillLevel").addEventListener("change", function ()
+        {
+            game.setSkillLevel(parseInt(this.value, 10));
+        });
     
-        newGame(skl);
+        newGame();
       }
       
       /// If we load Stockfish.js via a <script> tag, we need to wait until it loads.
-      //if (!wait_for_script) {
-      //  document.addEventListener("DOMContentLoaded", init);
-     // }
+      if (!wait_for_script) {
+        document.addEventListener("DOMContentLoaded", init);
+      }
     </script>
    
   </body>

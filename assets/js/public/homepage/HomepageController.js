@@ -4,7 +4,22 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
 	$scope.loginForm = {
 		loading: false
 	}
-
+	$scope.LevelForm = {
+		loading: false
+	}
+	$scope.submitLevelForm=function(num){
+	//$http.put('/updatelevelbeaten', {
+    //  DifficultyLevelBeaten:$scope.LevelForm.level,
+    //})
+    //.then(function onSuccess (){
+      // Refresh the page now that we've been logged in.
+    //  toastr.success('Level Updated');
+    //})    
+    toastr.success('Playing against AI Level: '+$scope.LevelForm.level);
+    $( "div[id='whole thing']" ).show(5000);
+    $( "form[id='levelform']" ).hide(1000);
+    init($scope.LevelForm.level);
+	},
 	$scope.submitLoginForm = function (){
 
     // Set the loading state (i.e. show loading spinner)
