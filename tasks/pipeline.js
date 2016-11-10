@@ -29,6 +29,8 @@ var jsFilesToInject = [
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/angular.1.3.js',
   'js/dependencies/jquery-1.10.1.min.js',
+  'js/dependencies/chessboard-0.3.0.min.js',
+  'js/dependencies/chess.min.js',
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
@@ -36,6 +38,7 @@ var jsFilesToInject = [
   'js/public/signup/SignupModule.js',
   'js/private/dashboard/DashboardModule.js',
   'js/public/homepage/HomepageModule.js',
+  'js/public/homepage/SinglePlayerModule.js',
   'js/**/*.js'
 ];
 

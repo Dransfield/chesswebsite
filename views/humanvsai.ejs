@@ -21,23 +21,31 @@
       
       <% } %>
       };
+      var announced_game_over;
     </script>
+     
        <!--SCRIPTS-->
        <script src="/js/dependencies/sails.io.js"></script>
        <script src="/js/dependencies/angular.1.3.js"></script>
        <script src="/js/dependencies/jquery-1.10.1.min.js"></script>
+       <script src="/js/dependencies/chessboard-0.3.0.min.js"></script>
+       <script src="/js/dependencies/chess.min.js"></script>
+       <script src="/js/dependencies/angular-chess.js"></script>
+       <script src="/js/dependencies/angular-chessboard.js"></script>
        <script src="/js/dependencies/angular-toastr.js"></script>
        <script src="/js/dependencies/bootstrap.min.js"></script>
-       <script src="/js/dependencies/chess.min.js"></script>
-       <script src="/js/dependencies/chessboard-0.3.0.min.js"></script>
        <script src="/js/dependencies/compareTo.module.js"></script>
+       <script src="/js/dependencies/enginegame-module.js"></script>
        <script src="/js/dependencies/enginegame.js"></script>
        <script src="/js/dependencies/stockfish.js"></script>
+       <script src="/js/dependencies/toastr.js"></script>
        <script src="/js/public/signup/SignupModule.js"></script>
        <script src="/js/private/dashboard/DashboardModule.js"></script>
        <script src="/js/public/homepage/HomepageModule.js"></script>
+       <script src="/js/public/homepage/SinglePlayerModule.js"></script>
        <script src="/js/private/dashboard/DashboardController.js"></script>
        <script src="/js/public/homepage/HomepageController.js"></script>
+       <script src="/js/public/homepage/SinglePlayerController.js"></script>
        <script src="/js/public/signup/SignupController.js"></script>
        <!--SCRIPTS END-->
     
@@ -60,7 +68,7 @@
 				</form>
 	-->
 	
-	<form id="levelform" ng-submit="submitLevelForm()">
+	<form ng-hide="hidedifficulty" id="levelform" ng-submit="PressedGoButton()" >
 	<h2>Choose a difficulty level:</h2>
 	<select ng-model="LevelForm.level" id="levelpicker" class="form-control bg-success" data-style="btn-success">
 	  <option>1</option>
@@ -84,9 +92,20 @@
 	  <option>19</option>
 	  <option>20</option>
 	</select>
-	<button type="submit" class="btn btn-success">Go</button>
+	<button id="go button" type="submit" class="btn btn-success">Go</button>
 	</form>
-    <div class="row" id="whole thing">
+	<p id="fenshower">
+	
+	</p>
+	<form ng-submit="injectfen()">
+	<input ng-model="fenform.fen" type="text" id="feninject">
+	
+	</input>
+	
+	<button type="submit" id="injectbutton" class="btn btn-success">Inject</button>
+	</form>
+	<script></script>
+    <div class="row" id="whole thing" ng-hide="hideboard">
       <div class="col-sm-7 col-md-6">
         <span class="h3" id="time1">0:05:00</span>
         <div id="board" style="width: 400px"></div>
@@ -156,7 +175,7 @@
         <h5>Evaluation</h5>
         <pre id=evaluation></pre>
     </div>
-    <script>$( "div[id='whole thing']" ).hide();</script>
+     <!--<script>$( "div[id='whole thing']" ).hide();</script>-->
     <!--<script src="enginegame.js"></script>-->
     <script>
       var wait_for_script;
@@ -195,18 +214,38 @@
             game.setPlayerColor('white');
             game.setDisplayScore(true);
             game.start();
-        }
+        
+			
         
         game.setSkillLevel
-        
+       
        // document.getElementById("skillLevel").addEventListener("change", function ()
         //{
         //    game.setSkillLevel(parseInt(this.value, 10));
         //});
     
         newGame(skl);
+        
+        	    $( "button[id='injectbutton'" ).click(function() {
+			alert( "Handler for .click() called."+$("input[id='feninject']" ).val());
+			game.injectgame($( "input[id='feninject']" ).val());
+			game.injectboard($( "input[id='feninject']" ).val());
+  
+			});
+        
+        
       }
+      return game;}
       
+      var chess;
+      
+       //$( "button[id='go button'" ).click(function() {
+			//toastr.success('Playing against AI Level: '+$("input[id='feninject']" ));
+			//$( "div[id='whole thing']" ).show(5000);
+			//$( "form[id='levelform']" ).hide(1000);
+			//init($("input[id='levelpicker']" ).val());
+    		//.});
+    	
       /// If we load Stockfish.js via a <script> tag, we need to wait until it loads.
       //if (!wait_for_script) {
       //  document.addEventListener("DOMContentLoaded", init);

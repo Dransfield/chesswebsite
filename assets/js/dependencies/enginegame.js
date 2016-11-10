@@ -23,18 +23,8 @@ function engineGame(options) {
             }
     };
 
-    setInterval(function ()
-    {
-        if (announced_game_over) {
-            return;
-        }
-        
-        if (game.game_over()) {
-            announced_game_over = true;
-            alert("Game Over");
-        }
-    }, 1000);
-
+   
+	
     function uciCmd(cmd, which) {
         console.log("UCI: " + cmd);
         
@@ -138,6 +128,7 @@ function engineGame(options) {
     function prepareMove() {
         stopClock();
         $('#pgn').text(game.pgn());
+         $( "p[id='fenshower']" ).html(game.fen());
         board.position(game.fen());
         updateClock();
         var turn = game.turn() == 'w' ? 'white' : 'black';
@@ -161,10 +152,23 @@ function engineGame(options) {
         }else
         
         {
+			if (game.in_draw())
+			{
+				alert("It's a draw");
+			}
 			if (game.in_checkmate())
 			{
 			if (turn != playerColor)
-			{alert("You Won");}
+			{
+			alert("You Won");
+			//$http.put('/updatelevelbeaten', {
+			//  DifficultyLevelBeaten:$scope.LevelForm.level,
+			//})
+			//.then(function onSuccess (){
+			// Refresh the page now that we've been logged in.
+			//  toastr.success('Level Updated');
+			//})  
+			}
 			else
 			{alert("You Lost");}
 			}
@@ -269,11 +273,24 @@ function engineGame(options) {
         onDragStart: onDragStart,
         onDrop: onDrop,
         onSnapEnd: onSnapEnd
+       
     };
 
     board = new ChessBoard('board', cfg);
 
     return {
+		game_over:function(){return game.game_over();},
+		game_checkmate:function(){return game.in_checkmate();},
+		NotPlayersTurn:function()
+		{
+			if (game.turn() != playerColor)
+			{
+			return true;
+			}
+		},
+			
+		injectboard:function(stuff){board.position(stuff);},
+        injectgame:function(stuff){game.load(stuff);},
         reset: function() {
             game.reset();
             uciCmd('setoption name Contempt value 0');

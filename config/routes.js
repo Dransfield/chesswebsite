@@ -47,9 +47,10 @@ module.exports.routes = {
   'POST /signup': 'UserController.signup',
   'PUT /login': 'UserController.login',
   'GET /logout': 'UserController.logout',
-	'GET /playvsai':'PageController.showChessPage',
-	'GET /profile':'PageController.showProfilePage',
-	'PUT /updatelevelbeaten':'UserController.UpdateLevelBeaten'
+  'GET /playvsai':'PageController.showChessPage',
+  'GET /playangular':'PageController.showPlayangularPage',
+  'GET /profile':'PageController.showProfilePage',
+  'PUT /updatelevelbeaten':'UserController.UpdateLevelBeaten'
   // '/': {
   //   view: 'homepage'
   // }

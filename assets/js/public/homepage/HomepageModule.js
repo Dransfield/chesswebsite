@@ -1,1 +1,1 @@
-angular.module('HomepageModule', ['toastr', 'compareTo']);
+angular.module('HomepageModule', ['toastr','nywton.chess','compareTo']);
