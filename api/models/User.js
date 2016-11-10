@@ -47,7 +47,7 @@ module.exports = {
     },
 	DifficultyLevelBeaten:{
 		type:'int',
-		defaultsTo:-1
+		defaultsTo:0
 		},
 	
     // url for gravatar

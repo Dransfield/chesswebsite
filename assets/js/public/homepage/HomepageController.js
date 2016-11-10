@@ -47,7 +47,7 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
         });
         return;
       }
-
+		
 				toastr.error('An unexpected error occurred, please try again.', 'Error', {
 					closeButton: true
 				});
