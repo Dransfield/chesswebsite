@@ -27,6 +27,8 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
 		var today=new Date();
 		var phrase='';
 		var msec = Date.parse(dat);
+		var n = today.getTimezoneOffset();
+		msec=msec+n;
 		var newnum=today-msec;
 		newnum=newnum/1000;
 		if (newnum<60)
