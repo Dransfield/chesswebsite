@@ -112,10 +112,11 @@
 			<td>{{chat.Player1Name}}</td>
 			<td>{{chat.phrase}}</td>
 			
+			     <% if (loggedin==true) { %>
 			<td>
 				<button ng-click="joingame(chat.id,chat.Player1,chat.Player1Name,'<%-me.id%>','<%-me.name%>')">Join Game</button>
 			</td>
-			
+			<% } %>
 			</tr>
             </tbody>
             </table>
