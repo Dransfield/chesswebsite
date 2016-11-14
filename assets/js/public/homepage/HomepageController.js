@@ -21,15 +21,13 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
 //	$scope.opg = success_data;
 //	$log.info(success_data);
 //});
-
-	function phrasefordate(dat)
+function phrasefordate(dat)
 	{
-		var today=new Date();
-		var phrase='';
-		var msec = Date.parse(dat);
-		var n = today.getTimezoneOffset();
-		msec=msec+n;
-		var newnum=today-msec;
+	
+		var n = Date.now();
+		//alert("string date "+dat);
+		//alert("now "+n);
+		var newnum=n-dat;
 		newnum=newnum/1000;
 		if (newnum<60)
 		{
@@ -62,7 +60,50 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
 		}
 		return phrase;
 	}
-	
+	/*
+	function phrasefordate(dat)
+	{
+		var today=new Date();
+		var phrase='';
+		var msec = Date.UTC(Date.parse(dat));
+		var n = Date.now();
+		alert("string date "+dat);
+		alert("now "+n);
+		alert("game date "+msec);
+		var newnum=n-msec;
+		newnum=newnum/1000;
+		if (newnum<60)
+		{
+		phrase=parseInt(newnum)+" seconds ago";
+		}
+		else
+		{
+		newnum=newnum/60;
+		if (newnum<60)
+		{
+		phrase=parseInt(newnum)+" minutes ago";
+		}
+		else
+		{
+		newnum=newnum/60;
+		if (newnum<60)
+		{
+		phrase=parseInt(newnum)+" hours ago";
+		}
+		else
+		{
+		newnum=newnum/24;
+		
+		phrase=parseInt(newnum)+" days ago";
+		
+		}
+		
+		}
+		
+		}
+		return phrase;
+	}
+	*/
 	io.socket.get('/openchessgame', function(resData, jwres)
 	 {
 		 $scope.$apply(function() {
@@ -71,7 +112,7 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
 		  {
 		
 		
-		resData[m].phrase=phrasefordate(resData[m].createdAt);
+		resData[m].phrase=phrasefordate(resData[m].Created);
 		
 		
 		
@@ -86,7 +127,7 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
 	{
 		$scope.$apply(function() {
 		console.log(event);
-		event.data.phrase=phrasefordate(event.data.createdAt);
+		event.data.phrase=phrasefordate(event.data.Created);
 		 $scope.opg.push(event.data);
 		})
 		})
@@ -177,7 +218,7 @@ angular.module('HomepageModule').controller('HomepageController', ['$scope', '$h
 
 
 
-    $http.post('/openchessgame', { Player1: id,Player1Name:name })
+    $http.post('/openchessgame', { Player1: id,Player1Name:name,Created:Date.now() })
     .then(function onSuccess (){
       // Refresh the page now that we've been logged in.
       //window.location.reload(true); 
