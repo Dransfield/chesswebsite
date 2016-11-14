@@ -53,6 +53,8 @@ module.exports = {
     // url for gravatar
     gravatarUrl: {
       type: 'string'
-    }
+    },
+    
+    
   }
 };

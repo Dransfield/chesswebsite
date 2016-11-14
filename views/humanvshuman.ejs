@@ -11,18 +11,16 @@
       <link rel="stylesheet" href="/styles/css/chessboard-0.3.0.min.css">
       <link rel="stylesheet" href="/styles/importer.css">
       <!--STYLES END-->
-          <script type="text/javascript">
-    window.SAILS_LOCALS = {
-      _csrf: '<%= _csrf %>'
-      <% if (loggedin==true){ %>
-		  ,
-      me: <%- JSON.stringify(me) %>
-		<% } %>
-    };
-  
-    </script>
     <script type="text/javascript">
-  
+    window.SAILS_LOCALS = {
+		GameID:<%- GameID %>,
+      _csrf: '<%= _csrf %>'
+       <% if (loggedin==true){ %>
+      ,
+      me: <%- JSON.stringify(me) %>
+      
+      <% } %>
+      };
       var announced_game_over;
     </script>
      
@@ -32,12 +30,9 @@
        <script src="/js/dependencies/jquery-1.10.1.min.js"></script>
        <script src="/js/dependencies/chessboard-0.3.0.min.js"></script>
        <script src="/js/dependencies/chess.min.js"></script>
-       <script src="/js/dependencies/angular-chess.js"></script>
-       <script src="/js/dependencies/angular-chessboard.js"></script>
        <script src="/js/dependencies/angular-toastr.js"></script>
        <script src="/js/dependencies/bootstrap.min.js"></script>
        <script src="/js/dependencies/compareTo.module.js"></script>
-       <script src="/js/dependencies/enginegame-module.js"></script>
        <script src="/js/dependencies/enginegame.js"></script>
        <script src="/js/dependencies/stockfish.js"></script>
        <script src="/js/dependencies/toastr.js"></script>
@@ -53,37 +48,25 @@
     
    
   </head>
-  <body ng-app="HomepageModule" >
+  <body ng-app="HomepageModule" ng-controller="SinglePlayerController" ng-cloak>
   <%- include partials/navbar.ejs %>
-  <div ng-controller="SinglePlayerController">
   
-  	<form id="levelform" ng-submit="ChooseLevel()" ng-show="showlevelpicker"">
-	<h2>Choose a difficulty level:</h2>
-	<select ng-model="levelform.level" id="levelpicker" class="form-control bg-success" data-style="btn-success">
-	  <option>1</option>
-	  <option>2</option>
-	  <option>3</option>
-	  <option>4</option>
-	  <option>5</option>
-	  <option>6</option>
-	  <option>7</option>
-	  <option>8</option>
-	  <option>9</option>
-	  <option>10</option>
-	  <option>11</option>
-	  <option>12</option>
-	  <option>13</option>
-	  <option>14</option>
-	  <option>15</option>
-	  <option>16</option>
-	  <option>17</option>
-	  <option>18</option>
-	  <option>19</option>
-	  <option>20</option>
-	</select>
-	<button id="go button" type="submit" class="btn btn-success">Go</button>
+
+	<p>Game Id is   <%- GameID%></p>
+	
+	<p id="fenshower">
+	
+	</p>
+	<form ng-submit="injectfen()">
+	<input ng-model="fenform.fen" type="text" id="feninject">
+	
+	</input>
+	
+	<button type="submit" id="injectbutton" class="btn btn-success">Inject</button>
 	</form>
-  <div class="row" id="whole thing">
+	
+	
+    <div class="row" id="whole thing" >
       <div class="col-sm-7 col-md-6">
         <span class="h3" id="time1">0:05:00</span>
         <div id="board" style="width: 400px"></div>
@@ -91,26 +74,23 @@
         <hr>
         <div id="engineStatus">...</div>
       </div>
-      </div>
-      </div>
-     
-	  <!--<div class="row" ng-show="showboard" id="whole thing">
-	  
-		<div class="col-sm-7 col-md-6">
-		<nywton-chessgame 
-		data-game="game" 
-		data-board="board"></nywton-chessgame>
-		</div>
-		<div class="col-sm-7 col-md-6">
-		<form ng-submit="Clearboard()">
-		<button type="submit" class="btn btn-success">
-		Clear
-		</button>
-		</form>
-		</div>
-		
-		</div>
-  </div>-->
-  
+      <div class="col-sm-5 col-md-6">
+        
+          <form class="form-horizontal">
+          <div class="form-group">
+            <label for="color" class="control-label col-xs-4 col-sm-6 col-md-4">Promote to</label>
+            <div class="col-xs-4 col-sm-6 col-md-4">
+              <select id=promote>
+                <option value=q selected>Queen</option>
+                <option value=r>Rook</option>
+                <option value=b>Bishop</option>
+                <option value=n>Knight</option>
+              </select>
+            </div>
+          </div>
+        </form>
+        
+       
+    
   </body>
 </html>

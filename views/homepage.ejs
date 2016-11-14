@@ -4,8 +4,9 @@
     <title>Chessbond</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
+   <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/angular-toastr.css">
@@ -13,9 +14,10 @@
     <link rel="stylesheet" href="/styles/css/chessboard-0.3.0.min.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
-
+ 
     <!--Added this so the client has access to the csrf tag and it's grabbed first service side on every page -->
-    <script type="text/javascript">
+    
+ <script type="text/javascript">
     window.SAILS_LOCALS = {
       _csrf: '<%= _csrf %>'
       <% if (loggedin==true){ %>
@@ -23,27 +25,108 @@
       me: <%- JSON.stringify(me) %>
 		<% } %>
     };
+    <% if (loggedin==true){ %>
+  var user=  window.SAILS_LOCALS.me.id;
+  <% } %>
   
+ 
     </script>
-
+    
   </head>
 
   <body ng-app="HomepageModule" ng-controller="HomepageController" ng-cloak>
-
+	   <% if (loggedin==true){ %>
+<div  ng-init="joinedgames('<%- me.id %>')"></div>
+  <% } %>
+  
    <%- include partials/navbar.ejs %>
-    <div class=" col-md-8 col-md-offset-2">
-      <div class="jumbotron">
-        <h1>Chessbond</h1>
-        <% if (loggedin==false) { %>
-        <a href="/signup" class="btn btn-lg btn-success">Sign up now!</a>
-           <%} %>
-            <a href="/playvsai" class="btn btn-lg btn-success">Play Chess against the AI!</a>
-	
-	 </div>
-    </div>
-
-
     
+ 
+	
+   <div class=" col-md-12">
+		<div class="jumbotron">
+        <h1>Chessbond</h1>
+     <% if (loggedin==false) { %>
+        <a href="/signup" class="btn btn-lg btn-success">Sign up now!</a>
+           <%}else { %>
+			<form ng-submit="creategame('<%- me.id %>','<%- me.name %>')">
+				<button type="submit" class="btn btn-lg btn-success">Create a New vs Human Game</button>
+			</form>
+			<a href="/playvsai" class="btn btn-lg btn-success">Play Chess against the AI!</a>
+			<% } %>
+		</div>
+    </div>
+   
+    <script>
+		
+	//io.socket.on('chessgame', function(event){console.log(event);})
+	//io.socket.get('/chessgame', function(resData, jwres) {console.log(resData);})
+
+	
+	</script>
+	
+    <h2 class="sub-header">Your Games</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              
+		
+			<thead>
+                <tr>
+	              <th>Player1</th>
+                  <th>Player2</th>
+                  
+				<!--HEADERS OF TABLE-->
+                </tr>
+           </thead>
+           <tbody>
+				  
+            <tr ng-repeat="game in joinedgames track by $index">
+			<td>{{game.Player1Name}}</td>
+			<td>{{game.Player2Name}}</td>
+			
+			<td>
+				<button ng-click="viewgame(chat.id,chat.Player1,me.id)">Join Game</button>
+			</td>
+			
+			</tr>
+            </tbody>
+            </table>
+          </div>
+     
+   
+    <h2 class="sub-header">Open Games</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              
+		
+			<thead>
+                <tr>
+	              <th>Player</th>
+                  <th>Date</th>
+                  <th>Join</th>
+				<!--HEADERS OF TABLE-->
+                </tr>
+           </thead>
+           <tbody>
+				  
+            <tr ng-repeat="chat in opg track by $index">
+			<td>{{chat.Player1Name}}</td>
+			<td>{{chat.phrase}}</td>
+			
+			<td>
+				<button ng-click="joingame(chat.id,chat.Player1,chat.Player1Name,me.id,me.name)">Join Game</button>
+			</td>
+			
+			</tr>
+            </tbody>
+            </table>
+          </div>
+          
+   
+    
+
+			
+
 
 
     <!--SCRIPTS-->
@@ -52,12 +135,9 @@
     <script src="/js/dependencies/jquery-1.10.1.min.js"></script>
     <script src="/js/dependencies/chessboard-0.3.0.min.js"></script>
     <script src="/js/dependencies/chess.min.js"></script>
-    <script src="/js/dependencies/angular-chess.js"></script>
-    <script src="/js/dependencies/angular-chessboard.js"></script>
     <script src="/js/dependencies/angular-toastr.js"></script>
     <script src="/js/dependencies/bootstrap.min.js"></script>
     <script src="/js/dependencies/compareTo.module.js"></script>
-    <script src="/js/dependencies/enginegame-module.js"></script>
     <script src="/js/dependencies/enginegame.js"></script>
     <script src="/js/dependencies/stockfish.js"></script>
     <script src="/js/dependencies/toastr.js"></script>
@@ -70,5 +150,8 @@
     <script src="/js/public/homepage/SinglePlayerController.js"></script>
     <script src="/js/public/signup/SignupController.js"></script>
     <!--SCRIPTS END-->
+
+
+   
   </body>
 </html>

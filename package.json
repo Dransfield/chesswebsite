@@ -23,7 +23,8 @@
     "grunt-contrib-less": "0.11.1",
     "grunt-contrib-coffee": "~0.10.1",
     "machinepack-passwords": "^2.1.3",
-    "machinepack-gravatar": "^1.1.4"
+    "machinepack-gravatar": "^1.1.4",
+    "sails-mongo":"*"
   },
   "scripts": {
     "start": "node app.js",

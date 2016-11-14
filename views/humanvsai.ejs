@@ -30,12 +30,9 @@
        <script src="/js/dependencies/jquery-1.10.1.min.js"></script>
        <script src="/js/dependencies/chessboard-0.3.0.min.js"></script>
        <script src="/js/dependencies/chess.min.js"></script>
-       <script src="/js/dependencies/angular-chess.js"></script>
-       <script src="/js/dependencies/angular-chessboard.js"></script>
        <script src="/js/dependencies/angular-toastr.js"></script>
        <script src="/js/dependencies/bootstrap.min.js"></script>
        <script src="/js/dependencies/compareTo.module.js"></script>
-       <script src="/js/dependencies/enginegame-module.js"></script>
        <script src="/js/dependencies/enginegame.js"></script>
        <script src="/js/dependencies/stockfish.js"></script>
        <script src="/js/dependencies/toastr.js"></script>
@@ -51,7 +48,7 @@
     
    
   </head>
-  <body ng-app="HomepageModule" ng-controller="HomepageController" ng-cloak>
+  <body ng-app="HomepageModule" ng-controller="SinglePlayerController" ng-cloak>
   <%- include partials/navbar.ejs %>
   
   <!--
@@ -215,7 +212,7 @@
             game.setDisplayScore(true);
             game.start();
         
-			
+			 
         
         game.setSkillLevel
        
@@ -225,7 +222,7 @@
         //});
     
         newGame(skl);
-        
+        $( "p[id='fenshower']" ).html(game.fen());
         	    $( "button[id='injectbutton'" ).click(function() {
 			alert( "Handler for .click() called."+$("input[id='feninject']" ).val());
 			game.injectgame($( "input[id='feninject']" ).val());

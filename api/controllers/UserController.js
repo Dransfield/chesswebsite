@@ -11,6 +11,72 @@ module.exports = {
    * Check the provided email address and password, and if they
    * match a real user in the database, sign in to Activity Overlord.
    */
+   Findjoinedgames:function (req,res){
+   	User.findOne(req.session.me, function foundUser(err, user) {
+		if (err) return res.negotiate(err);
+
+		// If session refers to a user who no longer exists, still allow logout.
+			if (!user) {
+			console.log('Session refers to a user who no longer exists.');
+			return res.backToHomePage();
+			}
+		
+		
+		
+		
+	Chessgame.find({
+				or : [
+				{ Player1: req.session.me },
+				{ Player2: req.session.me }
+				]
+			},function(err,jgames){
+				console.log(req.session.me+"jgames "+jgames);
+			return res.json(jgames);
+		});
+		     
+    });
+    },
+   Joingame: function(req,res)  {
+		User.findOne(req.session.me, function foundUser(err, user) {
+		if (err) return res.negotiate(err);
+
+		// If session refers to a user who no longer exists, still allow logout.
+			if (!user) {
+			sails.log.verbose('Session refers to a user who no longer exists.');
+			return res.backToHomePage();
+			}
+		PlayerName=req.param('PlayerName');
+		PlayerID=req.param('PlayerID');
+		GameID=req.param('GameID');
+		MyName=req.param('MyName');
+		Openchessgame.findOne(GameID, function foundUser(err, game) {
+		if (err) return res.negotiate(err);
+
+		// If session refers to a user who no longer exists, still allow logout.
+			if (!game) {
+			console.log('Session refers to a game that no longer exists.');
+			return res.backToHomePage();
+			}
+			Chessgame.create({Player1:PlayerID,Player2:req.session.me,Player1Name:PlayerName,Player2Name:MyName}).exec(function (err, records) {
+			console.log('Cant create joined game.');
+			console.log(JSON.stringify(err));
+			});
+			
+			game.destroy();
+		// Wipe out the session (log out)
+		
+		
+		sails.log.verbose('joining.'+GameID+' with '+PlayerID);
+       
+       
+      // Either send a 200 OK or redirect to the home page
+		return res.ok();
+		 });
+    
+    });
+    },
+   
+   
    UpdateLevelBeaten: function(req,res)  {
 		User.findOne(req.session.me, function foundUser(err, user) {
 		if (err) return res.negotiate(err);
@@ -80,6 +146,9 @@ module.exports = {
   /**
    * Sign up for a user account.
    */
+
+	   
+   
   signup: function(req, res) {
 
     var Passwords = require('machinepack-passwords');

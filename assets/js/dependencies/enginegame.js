@@ -154,13 +154,13 @@ function engineGame(options) {
         {
 			if (game.in_draw())
 			{
-				alert("It's a draw");
+			//	alert("It's a draw");
 			}
 			if (game.in_checkmate())
 			{
 			if (turn != playerColor)
 			{
-			alert("You Won");
+			//alert("You Won");
 			//$http.put('/updatelevelbeaten', {
 			//  DifficultyLevelBeaten:$scope.LevelForm.level,
 			//})
@@ -170,10 +170,11 @@ function engineGame(options) {
 			//})  
 			}
 			else
-			{alert("You Lost");}
+			{
+				//alert("You Lost");}
 			}
 			}
-			
+		}
     }
     
     evaler.onmessage = function(event) {
