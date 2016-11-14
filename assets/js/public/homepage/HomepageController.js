@@ -125,18 +125,70 @@ function phrasefordate(dat)
 	
 	io.socket.on('openchessgame', function(event)
 	{
-		$scope.$apply(function() {
 		console.log(event);
+		$scope.$apply(function() {
+		
+		if (event.verb=="created")
+		{
 		event.data.phrase=phrasefordate(event.data.Created);
 		 $scope.opg.push(event.data);
+		}
+		if (event.verb=="destroyed")
+		{
+			
+			
+		for(var i = $scope.opg.length - 1; i >= 0; i--) {
+			if($scope.opg[i].id === event.id) {
+			$scope.opg.splice(i, 1);
+			}
+		}
+		
+		}
+		
 		})
 		})
 	
+	io.socket.get('/chessgame', function(resData, jwres)
+	 {
+		 $scope.$apply(function() {
+		 $scope.joinedgames=resData;
+		 for (m in resData)
+		  {
+		
+		
+		resData[m].phrase=phrasefordate(resData[m].Created);
+		
+		
+		
+		}
+		
+		 //console.log(resData);
+	})
+		}
+	)
+	
 	io.socket.on('chessgame', function(event)
 	{
+		console.log(event);
 		$scope.$apply(function() {
+			
+		if (event.verb=="created")
+		{
 		event.data.phrase=phrasefordate(event.data.createdAt);
 		 $scope.joinedgames.push(event.data);
+		}
+		
+		if (event.verb=="destroyed")
+		{
+		for(var i = $scope.joinedgames.length - 1; i >= 0; i--) {
+			if($scope.joinedgames[i].id === event.id) {
+			$scope.joinedgames.splice(i, 1);
+			}
+		}
+		
+		}
+		
+		
 		})
 		})
 	
@@ -181,7 +233,7 @@ function phrasefordate(dat)
 
 
 	$scope.joingame=function(GameID,PlayerID,PlayerName,MyID,MyName){
-		
+		console.log("joingame player1"+PlayerID+" player2"+MyID+" player1name "+PlayerName+" Player2Name "+MyName);
 		$http.put('/joingame', {
 			GameID:GameID,
 			PlayerID:PlayerID,
@@ -190,8 +242,39 @@ function phrasefordate(dat)
 			MyName:MyName
 			})
 		.then(function onSuccess(sailsResponse){
-			toastr.success("Joined game");
-			//window.location = '/humanvshuman';
+			
+			io.socket.delete('/openchessgame/'+GameID, function (resData) {
+				
+			resData; // => {id:9, name: 'Timmy Mendez', occupation: 'psychic'}
+			
+			});
+		 $http.post('/chessgame',  {Player1:PlayerID,Player2:MyID,Player1Name:PlayerName,Player2Name:MyName} )
+    .then(function onSuccess (){
+      // Refresh the page now that we've been logged in.
+      //window.location.reload(true); 
+		//toastr.success('Created New Game');
+		toastr.success("Joined game");
+    })
+    .catch(function onError(sailsResponse) {
+	//toastr.error("Can't Create New Game");
+      // Handle known error type(s).
+      // Invalid username / password combination.
+      if (sailsResponse.status === 400 || 404) {
+        // $scope.loginForm.topLevelErrorMessage = 'Invalid email/password combination.';
+        //
+        toastr.error('Couldnt Create Game.', 'Error' );
+        
+         // closeButton: true
+        }
+        else
+        {
+       }
+				return;
+      })
+  
+    .finally(function eitherWay(){
+     // $scope.loginForm.loading = false;
+    })
 		})
 		.catch(function onError(sailsResponse){
 

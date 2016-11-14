@@ -37,12 +37,14 @@ module.exports = {
     });
     },
    Joingame: function(req,res)  {
+	   var sentresponse=false;
 		User.findOne(req.session.me, function foundUser(err, user) {
 		if (err) return res.negotiate(err);
 
 		// If session refers to a user who no longer exists, still allow logout.
 			if (!user) {
 			sails.log.verbose('Session refers to a user who no longer exists.');
+			sentresponse=true;
 			return res.backToHomePage();
 			}
 		PlayerName=req.param('PlayerName');
@@ -50,19 +52,60 @@ module.exports = {
 		GameID=req.param('GameID');
 		MyName=req.param('MyName');
 		Openchessgame.findOne(GameID, function foundUser(err, game) {
-		if (err) return res.negotiate(err);
-
+		if (err) 
+		{
+		if (sentresponse==false)
+		{
+		sentresponse=true;
+		
+			return res.negotiate(err);
+		}
+		}
 		// If session refers to a user who no longer exists, still allow logout.
+			
 			if (!game) {
 			console.log('Session refers to a game that no longer exists.');
+		if (sentresponse==false)
+		{
+		sentresponse=true;
+		
 			return res.backToHomePage();
+		}	
 			}
-			Chessgame.create({Player1:PlayerID,Player2:req.session.me,Player1Name:PlayerName,Player2Name:MyName}).exec(function (err, records) {
-			console.log('Cant create joined game.');
-			console.log(JSON.stringify(err));
+			
+			if (!game.Player2)
+			{
+				game.Player2=req.session.me;
+			//Chessgame.create({Player1:PlayerID,Player2:req.session.me,Player1Name:PlayerName,Player2Name:MyName}).exec(
+			//function (err, records) {
+			//console.log('Cant create joined game.');
+			//console.log(JSON.stringify(err));
+			//})
+			
+			
+			if(sentresponse==false)
+			{
+			sentrespone=true;
+			return res.ok();
+			}
+			
+			
+			
+			
+			}
+			else
+			{
+			console.log('someone already joined game.'+Game.Player2);
+			if (sentresponse==false)
+			{
+			sentresponse=true;
+			return res.forbidden();
+			}	
+			}
+			
 			});
 			
-			game.destroy();
+			//game.destroy();
 		// Wipe out the session (log out)
 		
 		
@@ -70,11 +113,15 @@ module.exports = {
        
        
       // Either send a 200 OK or redirect to the home page
+		if (sentresponse==false)
+		{
+		sentresponse=true;
 		return res.ok();
+		}
 		 });
     
-    });
     },
+    
    
    
    UpdateLevelBeaten: function(req,res)  {
