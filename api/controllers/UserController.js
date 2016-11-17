@@ -11,6 +11,55 @@ module.exports = {
    * Check the provided email address and password, and if they
    * match a real user in the database, sign in to Activity Overlord.
    */
+   UpdateGame:function(req,res){
+	   console.log('update game fired');
+	   Chessgame.update({id: req.params['id']}).set({
+  fen: req.params['fen']
+}).exec(function(err, bobs){
+  if (err) return res.serverError(err);
+  if (bobs.length > 1) return res.serverError('Consistency violation: somehow multiple users exist with the same username? There must be a bug elsewhere in the code base.');
+  if (bobs.length < 1) return res.notFound();
+
+  // Broadcast a message telling anyone subscribed to Bob that his hair is now red.
+  // (note that we exclude the requesting socket from the broadcast, and also include Bob's previous hair color)
+  Chessgame.publishUpdate(bobs[0].id, {
+    fen: req.params['fen']
+  }, req);
+
+  return res.ok();
+});
+   },
+   
+   subscribeToMyGames: function (req, res) {
+    if (!req.isSocket) {
+      return res.badRequest('Only a client socket can subscribe to a model.  You, sir or madame, appear to be an HTTP request.');
+    }
+	console.log('sub request from.'+req.session.me);
+			
+    // Let's say our client socket has a problem with people named "louie".
+
+    // First we'll find all users named "louie" (or "louis" even-- we should be thorough)
+    Chessgame.find({ or: [{Player1:req.session.me},{Player2: req.session.me}] }).exec(function(err, myGames){
+      if (err) {
+        return res.serverError(err);
+      }
+
+      // Now we'll use the ids we found to subscribe our client socket to each of these records.
+      Chessgame.subscribe(req, _.pluck(myGames, 'id'));
+      Chessgame.subscribe(req);
+		Chessgame.watch(req);
+		
+      // Now any time a user named "louie" or "louis" is modified or destroyed, our client socket
+      // will receive a notification (as long as it stays connected anyways).
+
+      // All done!  We could send down some data, but instead we send an empty response.
+      // (although we're ok telling this vengeful client socket when our users get
+      //  destroyed, it seems ill-advised to send him our Louies' sensitive user data.
+      //  We don't want to help this guy to hunt them down in real life.)
+      return res.ok();
+    });
+  },
+   
    Findjoinedgames:function (req,res){
    	User.findOne(req.session.me, function foundUser(err, user) {
 		if (err) return res.negotiate(err);
@@ -76,16 +125,22 @@ module.exports = {
 			if (!game.Player2)
 			{
 				game.Player2=req.session.me;
-			//Chessgame.create({Player1:PlayerID,Player2:req.session.me,Player1Name:PlayerName,Player2Name:MyName}).exec(
-			//function (err, records) {
-			//console.log('Cant create joined game.');
-			//console.log(JSON.stringify(err));
-			//})
+			Chessgame.create({Player1:PlayerID,Player2:req.session.me,Player1Name:PlayerName,Player2Name:MyName}).exec(
+			function (err, records) {
+				if(err){
+			console.log('Cant create joined game.');
+			console.log(JSON.stringify(err));
+			}
+			console.log("records");
+			console.log(records);
+			Chessgame.publishCreate( records );
+			});
 			
 			
 			if(sentresponse==false)
 			{
 			sentrespone=true;
+			
 			return res.ok();
 			}
 			
@@ -150,7 +205,18 @@ module.exports = {
     
     });
     },
-   
+   ChangeUsersCurrentGame: function (req,res){
+	    User.findOne({
+      id: req.session.me
+	},function foundUser(err,user){
+		if (!err){
+	user.GameID=req.param('GameID');
+	user.save();
+	return res.ok();
+	
+	}
+	});
+   },
   login: function (req, res) {
 
     // Try to look up user using the provided email address

@@ -13,7 +13,7 @@
       <!--STYLES END-->
     <script type="text/javascript">
     window.SAILS_LOCALS = {
-		GameID:<%- GameID %>,
+		
       _csrf: '<%= _csrf %>'
        <% if (loggedin==true){ %>
       ,
@@ -43,18 +43,19 @@
        <script src="/js/private/dashboard/DashboardController.js"></script>
        <script src="/js/public/homepage/HomepageController.js"></script>
        <script src="/js/public/homepage/SinglePlayerController.js"></script>
+       <script src="/js/public/homepage/TwoPlayerController.js"></script>
        <script src="/js/public/signup/SignupController.js"></script>
        <!--SCRIPTS END-->
     
    
   </head>
-  <body ng-app="HomepageModule" ng-controller="SinglePlayerController" ng-cloak>
+  <body ng-app="HomepageModule" ng-controller="TwoPlayerController" ng-cloak>
   <%- include partials/navbar.ejs %>
   
 
-	<p>Game Id is   <%- GameID%></p>
-	
-	<p id="fenshower">
+	<p>Game Id is   <%- me.GameID%></p>
+	<script> var GameID='<%- me.GameID%>'</script>
+		<p id="fenshower">
 	
 	</p>
 	<form ng-submit="injectfen()">
@@ -69,7 +70,7 @@
     <div class="row" id="whole thing" >
       <div class="col-sm-7 col-md-6">
         <span class="h3" id="time1">0:05:00</span>
-        <div id="board" style="width: 400px"></div>
+        <div ng-init="setBoard('<%- me.id %>')" id="board" style="width: 400px"></div>
         <span class="h3" id="time2">0:05:00</span>
         <hr>
         <div id="engineStatus">...</div>
@@ -89,7 +90,7 @@
             </div>
           </div>
         </form>
-        
+        <span class="label label-default" ng-model="TurnTaker">{{TurnTaker}}'s Turn</span>
        
     
   </body>

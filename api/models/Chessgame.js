@@ -17,8 +17,11 @@ Player1Name:{type:'string',
 Player2:{type:'string',
 		defaultsTo:''
   },
-  Player2Name:{type:'string',
+ Player2Name:{type:'string',
 		defaultsTo:''
-  }
+  },
+CurrentTurn:{type:'string',
+defaultsTo:''
+ }
 }
 };

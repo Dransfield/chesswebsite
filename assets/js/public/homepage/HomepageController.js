@@ -104,22 +104,21 @@ function phrasefordate(dat)
 		return phrase;
 	}
 	*/
+	
+	
 	io.socket.get('/openchessgame', function(resData, jwres)
 	 {
-		 $scope.$apply(function() {
+	 $scope.$apply(function() {
 		 $scope.opg=resData;
-		 for (m in resData)
-		  {
+				for (m in resData)
+				{
 		
 		
 		resData[m].phrase=phrasefordate(resData[m].Created);
+				}
 		
-		
-		
-		}
-		
-		 console.log(resData);
-	})
+		console.log(resData);
+			})
 		}
 	)
 	
@@ -147,34 +146,61 @@ function phrasefordate(dat)
 		
 		})
 		})
+	$scope.PlayGame=function(GameID)
+	{
+		$http.put('/ChangeUsersCurrentGame', {
+			  GameID: GameID
+    })
+    .then(function onSuccess (dat){
+      // Refresh the page now that we've been logged in.
+      //$scope.$apply(function() {
+     window.location="/humanvshuman";
+	//});
+    })
+	}
 	
-	io.socket.get('/chessgame', function(resData, jwres)
+	$scope.subscribeToMyGames=function(user)
+	{
+		io.socket.get('/subscribetomygames', function(resData, jwres)
+		{
+		console.log("try to subscribe to joined games");
+		console.log(resData);
+		console.log(jwres);	
+			
+		})
+		
+		
+			io.socket.get('/chessgame', function(resData, jwres)
 	 {
 		 $scope.$apply(function() {
-		 $scope.joinedgames=resData;
+		 
 		 for (m in resData)
-		  {
-		
-		
+		 {
+		if (resData[m].Player1==user)
+		{
 		resData[m].phrase=phrasefordate(resData[m].Created);
-		
-		
 		
 		}
 		
+		
+		}
+		//$scope.joinedgames=(resData);
 		 //console.log(resData);
 	})
 		}
 	)
 	
+		/*
 	io.socket.on('chessgame', function(event)
 	{
 		console.log(event);
 		$scope.$apply(function() {
-			
+		
+		if (event.data.Player1==user || event.data.Player2==user)
+		{
 		if (event.verb=="created")
 		{
-		event.data.phrase=phrasefordate(event.data.createdAt);
+		event.data.phrase=phrasefordate(event.data.Created);
 		 $scope.joinedgames.push(event.data);
 		}
 		
@@ -189,10 +215,30 @@ function phrasefordate(dat)
 		}
 		
 		
+		}})
 		})
-		})
+		*/
+	}
 	
-	$scope.joinedgames=function(user){
+	
+
+	
+	
+	
+	/*$scope.subscribeToMyGames=function(){
+	  $http.get('/subscribetomygames', {
+	}
+	}*/
+	$scope.deletegame=function (GameID){
+	
+	io.socket.delete('/chessgame/'+GameID, function (resData)
+	 {
+				
+			console.log(resData); // => {id:9, name: 'Timmy Mendez', occupation: 'psychic'}
+			console.log("Game to delete "+GameID);
+		});
+	}
+	$scope.getjoinedgames=function(user){
 	console.log('user'+user);
 	  $http.get('/findjoinedgames', {
       myid: user
@@ -244,11 +290,13 @@ function phrasefordate(dat)
 		.then(function onSuccess(sailsResponse){
 			
 			io.socket.delete('/openchessgame/'+GameID, function (resData) {
-				
+				$scope.getjoinedgames(MyID);
 			resData; // => {id:9, name: 'Timmy Mendez', occupation: 'psychic'}
 			
 			});
-		 $http.post('/chessgame',  {Player1:PlayerID,Player2:MyID,Player1Name:PlayerName,Player2Name:MyName} )
+			}
+			)
+		/* $http.post('/chessgame',  {Player1:PlayerID,Player2:MyID,Player1Name:PlayerName,Player2Name:MyName} )
     .then(function onSuccess (){
       // Refresh the page now that we've been logged in.
       //window.location.reload(true); 
@@ -291,7 +339,7 @@ function phrasefordate(dat)
 		.finally(function eitherWay(){
 			//form.loading = false;
 		})
-	
+	*/
 	}
 	
 	$scope.creategame=function(id,name){

@@ -36,7 +36,8 @@
 
   <body ng-app="HomepageModule" ng-controller="HomepageController" ng-cloak>
 	   <% if (loggedin==true){ %>
-<div  ng-init="joinedgames('<%- me.id %>')"></div>
+<div  ng-init="getjoinedgames('<%- me.id %>')"></div>
+<div ng-init="subscribeToMyGames()"></div>
   <% } %>
   
    <%- include partials/navbar.ejs %>
@@ -84,7 +85,11 @@
 			<td>{{game.Player2Name}}</td>
 			
 			<td>
-				<button ng-click="viewgame(chat.id,chat.Player1,me.id)">Join Game</button>
+				
+				
+				<button ng-click="PlayGame(game.id)" class="btn btn-lg btn-success" >Play Game</a>
+				<button ng-click="deletegame(game.id)">Delete Game</button>
+				
 			</td>
 			
 			</tr>
@@ -148,6 +153,7 @@
     <script src="/js/private/dashboard/DashboardController.js"></script>
     <script src="/js/public/homepage/HomepageController.js"></script>
     <script src="/js/public/homepage/SinglePlayerController.js"></script>
+    <script src="/js/public/homepage/TwoPlayerController.js"></script>
     <script src="/js/public/signup/SignupController.js"></script>
     <!--SCRIPTS END-->
 

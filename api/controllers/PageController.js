@@ -65,9 +65,10 @@ module.exports = {
           title: user.title,
           isAdmin: !!user.admin,
           gravatarUrl: user.gravatarUrl,
-          DifficultyLevelBeaten:user.DifficultyLevelBeaten
-		},
-		GameID:req.params['GameID']
+          DifficultyLevelBeaten:user.DifficultyLevelBeaten,
+          GameID:user.GameID
+		}
+		
       });
 
     });

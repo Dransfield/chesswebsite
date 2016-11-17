@@ -50,9 +50,12 @@ module.exports.routes = {
   'GET /playvsai':'PageController.showChessPage',
   'GET /humanvshuman':'PageController.showHvsHChessPage',
   'GET /profile':'PageController.showProfilePage',
+  'PUT /UpdateGame':'UserController.UpdateGame',
   'PUT /updatelevelbeaten':'UserController.UpdateLevelBeaten',
   'PUT /joingame':'UserController.Joingame',
-  'GET /findjoinedgames':'UserController.Findjoinedgames'
+  'GET /findjoinedgames':'UserController.Findjoinedgames',
+  'GET /subscribetomygames':'UserController.subscribeToMyGames',
+  'PUT /ChangeUsersCurrentGame':'UserController.ChangeUsersCurrentGame'
   // '/': {
   //   view: 'homepage'
   // }
