@@ -1,6 +1,7 @@
 angular.module('HomepageModule').controller('TwoPlayerController', ['$scope', '$http', 'toastr', function($scope, $http, toastr){
 var board1 ;
 var game;
+$scope.chatting="Chat:";
 	// set-up loginForm loading state
 	function updateTurnTakerLabel(game,gameRecord)
 	{
@@ -32,6 +33,96 @@ var game;
 		{return false;}
 		
 		}
+		}
+		
+		
+	$scope.getchatmessages=function(){
+		
+	  $http.get('/chatmessage', {
+      room: GameID
+    })
+    .then(function onSuccess (dat){
+      // Refresh the page now that we've been logged in.
+      //$scope.$apply(function() {
+      console.log("joined games reply"+JSON.stringify(dat.data));
+		for (m in dat.data)
+	{console.log("joined games reply2"+JSON.stringify(dat.data[m]));
+	$scope.chatting=$scope.chatting+String.fromCharCode(13, 10)+dat.data[m]['talker']+":"+dat.data[m]['msg']+" ";
+	}
+	//});
+    })
+    .catch(function onError(sailsResponse) {
+
+      // Handle known error type(s).
+      // Invalid username / password combination.
+      if (sailsResponse.status === 400 || 404) {
+        // $scope.loginForm.topLevelErrorMessage = 'Invalid email/password combination.';
+        //
+        toastr.error('Cant find joined games, not logged in.', 'Error', {
+          
+        });
+        return;
+      }
+
+				toastr.error('An unexpected error occurred trying to find joined games.', 'Error', {
+					
+				});
+				return;
+
+    })
+    .finally(function eitherWay(){
+      
+    });
+    
+}
+
+		
+		$scope.chatMessage=function(usrName)
+		{
+			io.socket.put("/chatmsg",{roomName:GameID,message:$scope.chatInput}, function (resData, jwres){
+ 
+			});
+			
+			
+			 $http.post('/Chatmessage', { talker: usrName,msg:$scope.chatInput,room:GameID})
+    .then(function onSuccess (){
+      // Refresh the page now that we've been logged in.
+      //window.location.reload(true); 
+		//toastr.success('Created New Game');
+    })
+    .catch(function onError(sailsResponse) {
+	toastr.error("Can't Create New chat message"+sailsResponse.status);
+	console.log(JSON.stringify(sailsResponse));
+      // Handle known error type(s).
+      // Invalid username / password combination.
+      if (sailsResponse.status === 400 || 404) {
+        // $scope.loginForm.topLevelErrorMessage = 'Invalid email/password combination.';
+        //
+        //toastr.error('Invalid email/password combination.', 'Error', {
+         // closeButton: true
+        }
+        else
+        {
+        toastr.error('An unexpected error occurred, please try again.', 'Error');
+		}
+				return;
+      })
+  
+    .finally(function eitherWay(){
+     // $scope.loginForm.loading = false;
+    })
+			
+		}
+		$scope.joinRoom=function (usrName)
+		{
+			io.socket.get("/subscribeToRoom",{roomName:GameID},function (resData,jwres){
+			console.log(JSON.stringify(resData));
+			});
+			io.socket.on('message', function (data){
+				 $scope.$apply($scope.chatting=$scope.chatting+String.fromCharCode(13, 10)+usrName+":"+data.greeting+" ");
+			console.log(data.greeting);
+			});
+	
 		}
 $scope.setBoard=function (me)
 		{

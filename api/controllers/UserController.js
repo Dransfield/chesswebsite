@@ -205,6 +205,28 @@ module.exports = {
     
     });
     },
+    
+	chatmsg:function(req,res){
+	sails.sockets.broadcast(req.param('roomName'), { greeting: req.param('message') });
+	},
+    
+    subscribeToRoom: function(req, res) {
+  if (!req.isSocket) {
+    return res.badRequest();}
+ 
+
+		
+  var roomName = req.param('roomName');
+  sails.sockets.join(req, roomName, function(err) {
+    if (err) {
+      return res.serverError(err);
+    }
+
+    return res.json({
+      message: 'Subscribed to a fun room called '+roomName+'!'
+    });
+  });
+},
    ChangeUsersCurrentGame: function (req,res){
 	    User.findOne({
       id: req.session.me

@@ -64,7 +64,7 @@
 	//io.socket.get('/chessgame', function(resData, jwres) {console.log(resData);})
 
 	</script>
-	
+	    <% if (loggedin==true){ %>
     <h2 class="sub-header">Your Games</h2>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -88,7 +88,7 @@
 				
 				
 				<button ng-click="PlayGame(game.id)" class="btn btn-lg btn-success" >Play Game</a>
-				<button ng-click="deletegame(game.id)">Delete Game</button>
+				<button ng-click="deletegame(game.id,'<%- me.id %>')">Delete Game</button>
 				
 			</td>
 			
@@ -97,7 +97,9 @@
             </table>
           </div>
      
-   
+    <% } %>
+    
+    
     <h2 class="sub-header">Open Games</h2>
           <div class="table-responsive">
             <table class="table table-striped">

@@ -53,6 +53,8 @@ module.exports.routes = {
   'PUT /UpdateGame':'UserController.UpdateGame',
   'PUT /updatelevelbeaten':'UserController.UpdateLevelBeaten',
   'PUT /joingame':'UserController.Joingame',
+  'PUT /chatmsg':'UserController.chatmsg',
+  'GET /subscribeToRoom':'UserController.subscribeToRoom',
   'GET /findjoinedgames':'UserController.Findjoinedgames',
   'GET /subscribetomygames':'UserController.subscribeToMyGames',
   'PUT /ChangeUsersCurrentGame':'UserController.ChangeUsersCurrentGame'

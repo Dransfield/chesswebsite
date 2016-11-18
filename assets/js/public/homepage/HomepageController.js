@@ -229,13 +229,14 @@ function phrasefordate(dat)
 	  $http.get('/subscribetomygames', {
 	}
 	}*/
-	$scope.deletegame=function (GameID){
+	$scope.deletegame=function (GameID,user){
 	
 	io.socket.delete('/chessgame/'+GameID, function (resData)
 	 {
 				
 			console.log(resData); // => {id:9, name: 'Timmy Mendez', occupation: 'psychic'}
 			console.log("Game to delete "+GameID);
+			$scope.getjoinedgames(user);
 		});
 	}
 	$scope.getjoinedgames=function(user){

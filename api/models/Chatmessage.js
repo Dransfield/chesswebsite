@@ -8,7 +8,16 @@
 module.exports = {
 
   attributes: {
+  talker: {
+      type: 'string',
+      required: true
+    },
 
+    // The user's title at their job (or something)
+    // e.g. Genius
+    message: {
+      type: 'string'
+    }
   }
 };
 
