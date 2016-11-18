@@ -38,7 +38,7 @@ $scope.chatting="Chat:";
 		
 	$scope.getchatmessages=function(){
 		
-	  $http.get('/chatmessage', {
+	  $http.get('/chatmessage?room='+GameID, {
       room: GameID
     })
     .then(function onSuccess (dat){
