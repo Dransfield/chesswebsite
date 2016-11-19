@@ -67,7 +67,7 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-   adapter: 'mongo',
+   adapter: 'connect-mongo',
    host: 'localhost',
    port: 27017,
    db: 'chessdb',
