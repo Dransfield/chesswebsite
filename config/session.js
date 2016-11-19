@@ -67,11 +67,11 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-   adapter: 'mongo',
-   host: 'localhost',
-   port: 27017,
-   db: 'chessdb',
-   collection: 'sessions',
+   //adapter: 'mongo',
+   //host: 'localhost',
+   //port: 27017,
+   //db: 'chessdb',
+   //collection: 'sessions',
 
   /***************************************************************************
   *                                                                          *
@@ -81,11 +81,11 @@ module.exports.session = {
   * 'mongodb://user:pass@host:port/database/collection',                     *
   *                                                                          *
   ***************************************************************************/
-     username: 'chessbondprakash',
-     password: 'Chessmaster123!',
-     database: 'chessdb',
-   autoReconnect: false,
-   ssl: false,
-   stringify: true
+     //username: 'chessbondprakash',
+     //password: 'Chessmaster123!',
+     //database: 'chessdb',
+   //autoReconnect: false,
+   //ssl: false,
+   //stringify: true
 
 };
