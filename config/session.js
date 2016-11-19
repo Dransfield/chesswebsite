@@ -86,6 +86,6 @@ module.exports.session = {
      //database: 'chessdb',
    //autoReconnect: false,
    //ssl: false,
-   //stringify: true
+   stringify: false
 
 };
