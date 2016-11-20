@@ -40,7 +40,7 @@ module.exports = {
     });
   },
   showHvsHChessPage:function (req, res) {
-	console.log(req.params);
+	//console.log(req.params);
     // If not logged in, show the public view.
     if (!req.session.me) {
       return res.view('humanvshuman',{loggedin:false});

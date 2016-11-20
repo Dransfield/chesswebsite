@@ -1,7 +1,18 @@
 angular.module('HomepageModule').controller('TwoPlayerController', ['$scope', '$http', 'toastr', function($scope, $http, toastr){
 var board1 ;
 var game;
-$scope.chatting="Chat:";
+$scope.chatting="";
+  $scope.piecethemes = [
+      {name:'A'},
+      {name:'B'},
+      {name:'C'},
+      {name:'D'},
+      {name:'E'},
+	  {name:'F'},
+	{name:'G'},
+   {name:'H'}
+    ];
+    $scope.MyPieceTheme=[$scope.piecethemes[0]];
 	// set-up loginForm loading state
 	function updateTurnTakerLabel(game,gameRecord)
 	{
@@ -182,7 +193,10 @@ io.socket.put('/UpdateGame',{
 {}
 );*/
 }
- board1 = ChessBoard('board',{draggable: true,onDrop: onDrop,} );
+console.log(JSON.stringify($scope.MyPieceTheme));
+console.log(JSON.stringify($scope.MyPieceTheme[0]['name']));
+
+ board1 = ChessBoard('board',{draggable: true,onDrop: onDrop,pieceTheme: 'img/chesspieces/'+$scope.MyPieceTheme[0]['name']+'/{piece}.png'} );
  game = new Chess();
   //io.socket.get('/subscribetomygames');
   //io.socket.get('Chessgame');

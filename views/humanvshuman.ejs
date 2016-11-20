@@ -66,14 +66,9 @@
 	<button type="submit" id="injectbutton" class="btn btn-success">Inject</button>
 	</form>
 	
-	<form ng-submit="chatMessage('<%- me.name %>')">
-	 <input type="text" class="form-control" placeholder="chat message" name="name" ng-model="chatInput"  required>
-	<button type="submit" >chat</button>
-	</form>
-	<textarea ng-model="chatting" rows="4" cols="50">
-	{{chatting}}
-	</textarea>
+	
     <div class="row" id="whole thing" >
+
       <div class="col-sm-7 col-md-6">
         <span class="h3" id="time1">0:05:00</span>
 		<div ng-init="joinRoom('<%- me.name %>')"></div>
@@ -85,7 +80,7 @@
       </div>
       <div class="col-sm-5 col-md-6">
         
-          <form class="form-horizontal">
+        <!--  <form class="form-horizontal">
           <div class="form-group">
             <label for="color" class="control-label col-xs-4 col-sm-6 col-md-4">Promote to</label>
             <div class="col-xs-4 col-sm-6 col-md-4">
@@ -97,9 +92,34 @@
               </select>
             </div>
           </div>
-        </form>
-        <span class="label label-default" ng-model="TurnTaker">{{TurnTaker}}'s Turn</span>
-       
+        </form>-->
+        <span class="label label-default" ng-model="TurnTaker">It's {{TurnTaker}}'s Turn</span>
+   <hr>
+   <span class="label label-default">Chat</span>
+    <div float="left">
     
+     <textarea ng-model="chatting" rows="4" cols="50">
+	{{chatting}}
+	</textarea>
+	<form ng-submit="chatMessage('<%- me.name %>')">
+	 <input type="text" class="form-control" placeholder="chat message" name="name" ng-model="chatInput"  required>
+	<button type="submit" >chat</button>
+	</form>  
+    </div>
+    <hr>
+    <hr>
+      
+      <span class="label label-default">Chesspiece Theme</span>
+        <select class="form-control"
+  ng-model="MyPieceTheme"
+  name="string"
+  multiple="string"
+  required="string"
+  ng-required="string"
+  ng-change="setBoard('<%- me.id %>')"
+ 
+  ng-options="theme.name for theme in piecethemes" >
+
+</select>
   </body>
 </html>

@@ -129,10 +129,10 @@ module.exports = {
 			function (err, records) {
 				if(err){
 			console.log('Cant create joined game.');
-			console.log(JSON.stringify(err));
+			//console.log(JSON.stringify(err));
 			}
 			console.log("records");
-			console.log(records);
+			//console.log(records);
 			Chessgame.publishCreate( records );
 			});
 			
