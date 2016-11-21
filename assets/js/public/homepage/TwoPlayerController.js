@@ -1,6 +1,8 @@
 angular.module('HomepageModule').controller('TwoPlayerController', ['$scope', '$http', 'toastr', function($scope, $http, toastr){
 var board1 ;
 var game;
+$scope.Player1Namer="";
+$scope.Player2Name="";
 $scope.chatting="";
   $scope.piecethemes = [
       {name:'A'},
@@ -14,6 +16,15 @@ $scope.chatting="";
     ];
     $scope.MyPieceTheme=[$scope.piecethemes[0]];
 	// set-up loginForm loading state
+	
+	function updatePlayersLabel(game,gameRecord)
+	{
+		console.log("hello");
+		$scope.$apply($scope.Player1Namer=gameRecord.Player1Name);
+		$scope.Player2Name=gameRecord.Player2Name;
+	console.log("scopep2"+$scope.Player2Name);	
+	}
+	
 	function updateTurnTakerLabel(game,gameRecord)
 	{
 		if (game.turn()=='w')
@@ -25,10 +36,16 @@ $scope.chatting="";
 		$scope.TurnTaker=gameRecord.Player2Name;
 		
 		}
+		
+		
+		$scope.$apply($scope.Player1Namer=gameRecord.Player1Name);
+		$scope.Player2Name=gameRecord.Player2Name;
+	//console.log("scopep2"+$scope.Player2Name);	
+		
 		}
 		
-			function usersTurn(game,gameRecord,me)
-	{
+		function usersTurn(game,gameRecord,me)
+		{
 		if (game.turn()=='w')
 		{
 		if (gameRecord.Player1==me)
@@ -130,7 +147,7 @@ $scope.chatting="";
 			console.log(JSON.stringify(resData));
 			});
 			io.socket.on('message', function (data){
-				 $scope.$apply($scope.chatting=$scope.chatting+String.fromCharCode(13, 10)+usrName+":"+data.greeting+" ");
+			$scope.$apply($scope.chatting=$scope.chatting+String.fromCharCode(13, 10)+usrName+":"+data.greeting+" ");
 			console.log(data.greeting);
 			});
 	
@@ -172,6 +189,7 @@ function updateStatus(game,gameRecord,move)
 gameRecord.fen=game.fen();
 gameRecord.lastmove=move.from+move.to;
 updateTurnTakerLabel(game,gameRecord);
+updatePlayersLabel(game,gameRecord);
 //game.load(gameRecord.fen);
 
 

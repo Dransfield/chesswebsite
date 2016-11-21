@@ -385,8 +385,8 @@ function phrasefordate(dat)
     $scope.loginForm.loading = true;
 
     // Submit request to Sails.
-    $http.put('/login', {
-      email: $scope.loginForm.email,
+    $http.put('/auth/local', {
+      identifier: $scope.loginForm.email,
       password: $scope.loginForm.password
     })
     .then(function onSuccess (){

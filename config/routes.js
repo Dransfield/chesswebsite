@@ -42,11 +42,28 @@ module.exports.routes = {
   ////////////////////////////////////////////////////////////
   // JSON API
   ////////////////////////////////////////////////////////////
+//'get /auth/facebook':'UserController.authenticate_facebook',
+//'get /auth/facebook/callback':'UserController.facebook_callback',
+///////////
+//PASPORT
+/////////
+  'get /login': 'AuthController.login',
+  'get /logout': 'AuthController.logout',
+  'get /register': 'AuthController.register',
+
+  'post /auth/local': 'AuthController.callback',
+  'post /auth/local/:action': 'AuthController.callback',
+
+  'get /auth/:provider': 'AuthController.provider',
+  'get /auth/:provider/callback': 'AuthController.callback',
+  /////////////
+  //END PASSPORT
+  /////////////
 
   // User enrollment + authentication
-  'POST /signup': 'UserController.signup',
-  'PUT /login': 'UserController.login',
-  'GET /logout': 'UserController.logout',
+  //'POST /signup': 'UserController.signup',
+ // 'PUT /login': 'UserController.login',
+  //'GET /logout': 'UserController.logout',
   'GET /playvsai':'PageController.showChessPage',
   'GET /humanvshuman':'PageController.showHvsHChessPage',
   'GET /profile':'PageController.showProfilePage',

@@ -25,7 +25,16 @@
     "machinepack-passwords": "^2.1.3",
     "machinepack-gravatar": "^1.1.4",
     "sails-mongo":"*",
-    "connect-mongo":"0.7.0"
+    "connect-mongo":"0.7.0",
+    "sails-generate-auth":"*",
+    "kerberos":"*",
+    "passport":"*",
+    "passport-local":"*",
+    "passport-twitter":"*",
+    "passport-facebook":"*",
+    "passport-google-oauth":"*",
+    "validator":"*",
+    "bcryptjs":"*"
   },
   "scripts": {
     "start": "node app.js",

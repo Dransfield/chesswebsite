@@ -11,6 +11,7 @@ module.exports = {
    * Check the provided email address and password, and if they
    * match a real user in the database, sign in to Activity Overlord.
    */
+
    UpdateGame:function(req,res){
 	   console.log('update game fired');
 	   Chessgame.update({id: req.params['id']}).set({
@@ -239,7 +240,7 @@ module.exports = {
 	}
 	});
    },
-  login: function (req, res) {
+/*  login: function (req, res) {
 
     // Try to look up user using the provided email address
     User.findOne({
@@ -277,7 +278,7 @@ module.exports = {
     });
 
   },
-
+  */
   /**
    * Sign up for a user account.
    */
@@ -350,7 +351,7 @@ module.exports = {
    * Log out of Activity Overlord.
    * (wipes `me` from the sesion)
    */
-  logout: function (req, res) {
+ /* logout: function (req, res) {
 
     // Look up the user record from the database which is
     // referenced by the id in the user session (req.session.me)
@@ -370,5 +371,5 @@ module.exports = {
       return res.backToHomePage();
 
     });
-  }
+  }*/
 };
